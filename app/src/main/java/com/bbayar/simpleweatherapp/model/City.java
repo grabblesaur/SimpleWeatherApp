@@ -1,12 +1,15 @@
 package com.bbayar.simpleweatherapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class City {
+public class City implements Parcelable{
     @SerializedName("coord")
     @Expose
     public Coord coord;
@@ -18,7 +21,7 @@ public class City {
     public String base;
     @SerializedName("main")
     @Expose
-    public Main main;
+    public MainInformation mMainInformation;
     @SerializedName("wind")
     @Expose
     public Wind wind;
@@ -41,12 +44,13 @@ public class City {
     @Expose
     public Long cod;
 
-    public City(Coord coord, List<Weather> weather, String base, Main main, Wind wind, Clouds clouds,
+    public City(Coord coord, List<Weather> weather, String base,
+                MainInformation mainInformation, Wind wind, Clouds clouds,
                 Long dt, Sys sys, Long id, String name, Long cod) {
         this.coord = coord;
         this.weather = weather;
         this.base = base;
-        this.main = main;
+        this.mMainInformation = mainInformation;
         this.wind = wind;
         this.clouds = clouds;
         this.dt = dt;
@@ -54,6 +58,52 @@ public class City {
         this.id = id;
         this.name = name;
         this.cod = cod;
+    }
+
+    protected City(Parcel in) {
+        coord = in.readParcelable(Coord.class.getClassLoader());
+        in.readList(weather, List.class.getClassLoader());
+        base = in.readString();
+        mMainInformation = in.readParcelable(MainInformation.class.getClassLoader());
+        wind = in.readParcelable(Wind.class.getClassLoader());
+        clouds = in.readParcelable(Clouds.class.getClassLoader());
+        dt = in.readLong();
+        sys = in.readParcelable(Sys.class.getClassLoader());
+        id = in.readLong();
+        name = in.readString();
+        cod = in.readLong();
+    }
+
+    public static final Creator<City> CREATOR = new Creator<City>() {
+        @Override
+        public City createFromParcel(Parcel in) {
+            return new City(in);
+        }
+
+        @Override
+        public City[] newArray(int size) {
+            return new City[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeParcelable(this.coord, i);
+        parcel.writeList(this.weather);
+        parcel.writeString(this.base);
+        parcel.writeParcelable(this.mMainInformation, i);
+        parcel.writeParcelable(this.wind, i);
+        parcel.writeParcelable(this.clouds, i);
+        parcel.writeLong(this.dt);
+        parcel.writeParcelable(this.sys, i);
+        parcel.writeLong(this.id);
+        parcel.writeString(this.name);
+        parcel.writeLong(this.cod);
     }
 
     public Coord getCoord() {
@@ -80,12 +130,12 @@ public class City {
         this.base = base;
     }
 
-    public Main getMain() {
-        return main;
+    public MainInformation getMainInformation() {
+        return mMainInformation;
     }
 
-    public void setMain(Main main) {
-        this.main = main;
+    public void setMainInformation(MainInformation mainInformation) {
+        this.mMainInformation = mainInformation;
     }
 
     public Wind getWind() {
@@ -145,288 +195,3 @@ public class City {
     }
 }
 
-class Clouds {
-    @SerializedName("all")
-    @Expose
-    public Long all;
-
-    public Clouds(Long all) {
-        this.all = all;
-    }
-
-    public Long getAll() {
-        return all;
-    }
-
-    public void setAll(Long all) {
-        this.all = all;
-    }
-}
-
-class Coord {
-    @SerializedName("lon")
-    @Expose
-    public Double lon;
-    @SerializedName("lat")
-    @Expose
-    public Double lat;
-
-    public Coord(Double lon, Double lat) {
-        this.lon = lon;
-        this.lat = lat;
-    }
-
-    public Double getLon() {
-        return lon;
-    }
-
-    public void setLon(Double lon) {
-        this.lon = lon;
-    }
-
-    public Double getLat() {
-        return lat;
-    }
-
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-}
-
-class Main {
-    @SerializedName("temp")
-    @Expose
-    public Double temp;
-    @SerializedName("pressure")
-    @Expose
-    public Long pressure;
-    @SerializedName("humidity")
-    @Expose
-    public Long humidity;
-    @SerializedName("temp_min")
-    @Expose
-    public Double tempMin;
-    @SerializedName("temp_max")
-    @Expose
-    public Double tempMax;
-
-    public Main(Double temp, Long pressure, Long humidity, Double tempMin, Double tempMax) {
-        this.temp = temp;
-        this.pressure = pressure;
-        this.humidity = humidity;
-        this.tempMin = tempMin;
-        this.tempMax = tempMax;
-    }
-
-    public Double getTemp() {
-        return temp;
-    }
-
-    public void setTemp(Double temp) {
-        this.temp = temp;
-    }
-
-    public Long getPressure() {
-        return pressure;
-    }
-
-    public void setPressure(Long pressure) {
-        this.pressure = pressure;
-    }
-
-    public Long getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(Long humidity) {
-        this.humidity = humidity;
-    }
-
-    public Double getTempMin() {
-        return tempMin;
-    }
-
-    public void setTempMin(Double tempMin) {
-        this.tempMin = tempMin;
-    }
-
-    public Double getTempMax() {
-        return tempMax;
-    }
-
-    public void setTempMax(Double tempMax) {
-        this.tempMax = tempMax;
-    }
-}
-
-class Sys {
-    @SerializedName("type")
-    @Expose
-    public Long type;
-    @SerializedName("id")
-    @Expose
-    public Long id;
-    @SerializedName("message")
-    @Expose
-    public Double message;
-    @SerializedName("country")
-    @Expose
-    public String country;
-    @SerializedName("sunrise")
-    @Expose
-    public Long sunrise;
-    @SerializedName("sunset")
-    @Expose
-    public Long sunset;
-
-    public Sys(Long type, Long id, Double message, String country, Long sunrise, Long sunset) {
-        this.type = type;
-        this.id = id;
-        this.message = message;
-        this.country = country;
-        this.sunrise = sunrise;
-        this.sunset = sunset;
-    }
-
-    public Long getType() {
-        return type;
-    }
-
-    public void setType(Long type) {
-        this.type = type;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getMessage() {
-        return message;
-    }
-
-    public void setMessage(Double message) {
-        this.message = message;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Long getSunrise() {
-        return sunrise;
-    }
-
-    public void setSunrise(Long sunrise) {
-        this.sunrise = sunrise;
-    }
-
-    public Long getSunset() {
-        return sunset;
-    }
-
-    public void setSunset(Long sunset) {
-        this.sunset = sunset;
-    }
-}
-class Weather {
-    @SerializedName("id")
-    @Expose
-    public Long id;
-    @SerializedName("main")
-    @Expose
-    public String main;
-    @SerializedName("description")
-    @Expose
-    public String description;
-    @SerializedName("icon")
-    @Expose
-    public String icon;
-
-    public Weather(Long id, String main, String description, String icon) {
-        this.id = id;
-        this.main = main;
-        this.description = description;
-        this.icon = icon;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMain() {
-        return main;
-    }
-
-    public void setMain(String main) {
-        this.main = main;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-}
-class Wind {
-    @SerializedName("speed")
-    @Expose
-    public Double speed;
-    @SerializedName("deg")
-    @Expose
-    public Long deg;
-    @SerializedName("gust")
-    @Expose
-    public Double gust;
-
-    public Wind(Double speed, Long deg, Double gust) {
-        this.speed = speed;
-        this.deg = deg;
-        this.gust = gust;
-    }
-
-    public Double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(Double speed) {
-        this.speed = speed;
-    }
-
-    public Long getDeg() {
-        return deg;
-    }
-
-    public void setDeg(Long deg) {
-        this.deg = deg;
-    }
-
-    public Double getGust() {
-        return gust;
-    }
-
-    public void setGust(Double gust) {
-        this.gust = gust;
-    }
-}

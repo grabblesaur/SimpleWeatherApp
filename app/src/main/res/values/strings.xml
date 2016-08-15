@@ -11,4 +11,17 @@
     <string name="cancel">cancel</string>
     <string name="id">Identifier</string>
     <string name="add_item">Adding new city</string>
+    <string name="detail_desc">description</string>
+    <string name="example_country">RU</string>
+    <string name="detail_tmin_tmax">from 10 to 12</string>
+    <string name="detail_tmin">Min</string>
+    <string name="detail_tmax">Max</string>
+    <string name="detail_date">current date,</string>
+    <string name="detail_weather_title">Main Information</string>
+    <string name="detail_wind">5 m/s</string>
+    <string name="example_in_percent">50%</string>
+    <string name="wind_icon">wind_icon</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="time">time</string>
 </resources>

@@ -6,9 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Bayar on 11.08.2016.
- */
 public class MainInformation implements Parcelable {
     @SerializedName("temp")
     @Expose

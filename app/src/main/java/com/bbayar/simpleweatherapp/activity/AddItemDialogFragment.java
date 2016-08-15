@@ -59,12 +59,12 @@ public class AddItemDialogFragment extends DialogFragment {
     @OnClick(R.id.add_item) void addItem(View view) {
 
         String stringId = mEditText.getText().toString();
+        dismiss();
         try {
             mListener.addItem(Integer.valueOf(stringId));
         } catch (NumberFormatException nfe)  {
             Snackbar.make(view, "Invalid id: " + stringId, Snackbar.LENGTH_SHORT).show();
         }
-        dismiss();
     }
 
 }

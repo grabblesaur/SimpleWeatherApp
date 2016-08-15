@@ -76,4 +76,11 @@ public class Wind implements Parcelable{
     public void setGust(Double gust) {
         this.gust = gust;
     }
+
+    public StringBuilder getFormattedWind() {
+        StringBuilder windSpeed = new StringBuilder();
+        windSpeed.append(speed);
+        windSpeed.append(" m/s");
+        return windSpeed;
+    }
 }

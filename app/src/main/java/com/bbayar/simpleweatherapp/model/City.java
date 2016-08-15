@@ -193,5 +193,14 @@ public class City implements Parcelable{
     public void setCod(Long cod) {
         this.cod = cod;
     }
+
+    public String getDate() {
+
+        return "";
+    }
+
+    public String getTime() {
+        return "";
+    }
 }
 

@@ -27,7 +27,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements AddItemDialogFragment.AddItemDialogCallbackInterface {
+        implements AddItemDialogFragment.AddItemDialogCallbackInterface,
+        MainFragment.MainFragmentCallbackInterface{
 
     public static final String API_KEY = "20506595c1c227a987bb75a5f0b26b1a";
     public static final String TAG = "ghjcnjnfr";
@@ -46,10 +47,12 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        int cityId = 524901;
-        fetchData(cityId);
+        int[] ids = {524901, 523523, 1261012, 2766725};
+        for (int cityId : ids) {
+            fetchData(cityId);
+        }
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -129,18 +132,23 @@ public class MainActivity extends AppCompatActivity
     public void addItem(int id) {
         fetchData(id);
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        /***
-         * TODO:
-         * Получить экзмепляр MainFragment
-         * получить Адаптер и вызвать метод notify()
-         */
         CitiesAdapter adapter = mMainFragment.getAdapter();
         adapter.notifyItemInserted(mCityList.size());
         adapter.notifyItemRangeChanged(mCityList.size(), mCityList.size());
+    }
+
+    @Override
+    public void onItemSelected(int position) {
+        DetailFragment fragment = DetailFragment.newInstance(mCityList.get(position));
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

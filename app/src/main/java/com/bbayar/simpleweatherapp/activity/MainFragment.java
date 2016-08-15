@@ -21,11 +21,16 @@ import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
 
+    public interface MainFragmentCallbackInterface {
+        void onItemSelected(int position);
+    }
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
     private List<City> mCityList;
     private CitiesAdapter mAdapter;
+    private MainFragmentCallbackInterface mListener;
 
     @Nullable
     @Override
@@ -35,9 +40,9 @@ public class MainFragment extends Fragment {
 
         Log.d(MainActivity.TAG, "MainFragment.onCreateView(): ");
 
+        mListener = (MainFragmentCallbackInterface) getActivity();
         mCityList = getArguments().getParcelableArrayList(MainActivity.KEY_LIST);
-        mAdapter = new CitiesAdapter(getContext(), mCityList);
-
+        mAdapter = new CitiesAdapter(getContext(), mCityList, mListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
         return view;
